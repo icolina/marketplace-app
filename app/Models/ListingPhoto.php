@@ -18,7 +18,6 @@ class ListingPhoto extends Model
     protected $fillable = [
         'listing_id',
         'photo_path',
-        'is_primary',
     ];
 
     /**
