@@ -23,8 +23,11 @@ class ListingResource extends JsonResource
                 return new CategoryResource($this->category);
             }),
             'subcategory' => $this->whenLoaded('subcategory'),
-            'photos' => $this->whenLoaded('photos'),
+            'photos' => $this->whenLoaded('photos', function() {
+                return ListingPhotoResource::collection($this->photos);
+            }),
             'seller' => $this->whenLoaded('seller'),
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
