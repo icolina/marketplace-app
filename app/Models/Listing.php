@@ -27,9 +27,9 @@ class Listing extends Model
     /**
      * Get the user that owns the listing.
      */
-    public function user()
+    public function seller()
     {
-        return $this->belongsTo(User::class, 'id', 'seller_id');
+        return $this->belongsTo(User::class, 'seller_id', 'id');
     }
 
     /**
