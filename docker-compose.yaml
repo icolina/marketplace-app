@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  # Laravel backend
+  backend:
+    build: ./backend
+    container_name: laravel-backend
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mysql
+
+  # React frontend
+  frontend:
+    build: ./frontend
+    container_name: react-frontend
+    ports:
+      - "3000:80"
+
+  # MySQL database
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # Nginx for Laravel
+  nginx:
+    image: nginx:stable-alpine
+    container_name: laravel-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www
+      - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
