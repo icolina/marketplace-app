@@ -87,4 +87,18 @@ class ListingController extends Controller
 
         return response()->noContent();
     }
+
+    /**
+     * Display a listing of the authenticated user's listings.
+     */
+    public function myListings()
+    {
+        $user = auth()->user();
+
+        $listings = Listing::with(['seller', 'subcategory.category', 'photos'])
+            ->where('seller_id', $user->id)
+            ->get();
+
+        return ListingResource::collection($listings);
+    }
 }
